@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kidney Quality Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    label { display: block; margin-top: 10px; }
+    input[type="number"] { width: 100%; padding: 8px; margin-top: 5px; }
+    button { margin-top: 15px; padding: 10px 20px; }
+    #result { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+ 
+
+  <label for="fbs">FBS:</label>
+  <input type="number" id="fbs" step="any">
+
+  <label for="hba1c">HbA1c:</label>
+  <input type="number" id="hba1c" step="any">
+
+  <label for="cholesterol">Cholesterol:</label>
+  <input type="number" id="cholesterol" step="any">
+
+  <button onclick="calculateKidneyQuality()">Calculate</button>
+
+  <div id="result"></div>
+
+  <script>
+    function calculateKidneyQuality() {
+      const fbs = parseFloat(document.getElementById('fbs').value);
+      const hba1c = parseFloat(document.getElementById('hba1c').value);
+      const cholesterol = parseFloat(document.getElementById('cholesterol').value);
+
+      const exponent = -11.371 + 0.043 * fbs + 0.539 * hba1c + 0.016 * cholesterol;
+      const py = Math.exp(exponent) / (1 + Math.exp(exponent));
+
+      const quality = py >= 0.7 ? 1 : 0;
+      const message = quality === 1 ? 'มีคุณภาพอัตราการกรองของไต' : 'ไม่มีคุณภาพอัตราการกรองของไต';
+
+      document.getElementById('result').innerHTML =
+        `P(y) = ${py.toFixed(4)}<br>ผลลัพธ์: ${quality} (${message})`;
+    }
+  </script>
+</body>
+</html>
